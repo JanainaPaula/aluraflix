@@ -3,6 +3,7 @@ package br.com.aluraflix.controller;
 import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.IVideoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class VideoController {
     }
 
     @PostMapping
-    public ResponseEntity<VideoDTO> cadastrar(@RequestBody VideoDTO dto){
+    public ResponseEntity<VideoDTO> cadastrar(@RequestBody @Valid VideoDTO dto){
         Video videoCadastrado = service.cadastra(dto);
         return ResponseEntity.created(URI.create(String.format("/videos/%s", videoCadastrado.getId())))
                 .body(videoCadastrado.toDTO());
