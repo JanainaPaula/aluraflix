@@ -1,5 +1,6 @@
 package br.com.aluraflix.model;
 
+import br.com.aluraflix.controller.dto.VideoDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,4 +23,19 @@ public class Video {
 
     public Video() {
     }
+
+    public Video(String titulo, String descricao, String url) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.url = url;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public VideoDTO toDTO(){
+        return new VideoDTO(this.titulo, this.descricao, this.url);
+    }
+
 }
