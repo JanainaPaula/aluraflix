@@ -5,6 +5,8 @@ import br.com.aluraflix.model.Video;
 import br.com.aluraflix.repository.VideoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VideoService implements IVideoService{
 
@@ -17,5 +19,10 @@ public class VideoService implements IVideoService{
     @Override
     public Video cadastra(VideoDTO dto) {
         return repository.save(dto.toModel());
+    }
+
+    @Override
+    public List<Video> exibir() {
+        return repository.findAll();
     }
 }
