@@ -39,4 +39,10 @@ public class VideoController {
         return ResponseEntity.created(URI.create(String.format("/videos/%s", videoCadastrado.getId())))
                 .body(videoCadastrado.toDTO());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletaPorId(@PathVariable Long id){
+        service.deletaPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }
