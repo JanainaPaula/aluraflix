@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -97,6 +98,18 @@ class VideoControllerTest {
 
         MockHttpServletResponse response = mvc.perform(
                 get("/videos")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    void deveriaDevolverStatus200QuandoEncontrado() throws Exception {
+        given(service.buscarPorId(Mockito.any())).willReturn(new Video("Curso Java", "Curso rápido java", "http://www.google.com"));
+
+        MockHttpServletResponse response = mvc.perform(
+                get("/videos/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 

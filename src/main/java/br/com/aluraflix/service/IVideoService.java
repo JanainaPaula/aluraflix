@@ -8,4 +8,5 @@ import java.util.List;
 public interface IVideoService {
     Video cadastra(VideoDTO dto);
     List<Video> exibir();
+    Video buscarPorId(Long id);
 }

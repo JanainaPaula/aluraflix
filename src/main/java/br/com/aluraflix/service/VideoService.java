@@ -25,4 +25,9 @@ public class VideoService implements IVideoService{
     public List<Video> exibir() {
         return repository.findAll();
     }
+
+    @Override
+    public Video buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Vídeo não encontrado!"));
+    }
 }
