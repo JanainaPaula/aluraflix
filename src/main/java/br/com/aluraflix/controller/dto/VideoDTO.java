@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 public record VideoDTO(
+
+        Long id,
+
         @NotBlank(message = "O titulo do video não pode estar vazio.")
         String titulo,
 

@@ -30,4 +30,14 @@ public class VideoService implements IVideoService{
     public Video buscarPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Vídeo não encontrado!"));
     }
+    @Override
+    public void deletaPorId(Long id){
+        var video = repository.findById(id);
+        if (video.isPresent()){
+            repository.deleteById(id);
+        }
+        else {
+            throw new RuntimeException("Vídeo não encontrado!");
+        }
+    }
 }
