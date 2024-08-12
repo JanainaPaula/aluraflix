@@ -9,4 +9,5 @@ public interface IVideoService {
     Video cadastra(VideoDTO dto);
     List<Video> exibir();
     Video buscarPorId(Long id);
+    void deletaPorId(Long id);
 }

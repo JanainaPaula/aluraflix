@@ -35,7 +35,7 @@ public class Video {
     }
 
     public VideoDTO toDTO(){
-        return new VideoDTO(this.titulo, this.descricao, this.url);
+        return new VideoDTO(this.id, this.titulo, this.descricao, this.url);
     }
 
 }
