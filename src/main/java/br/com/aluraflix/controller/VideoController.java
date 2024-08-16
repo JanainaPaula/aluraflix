@@ -1,5 +1,6 @@
 package br.com.aluraflix.controller;
 
+import br.com.aluraflix.controller.dto.UpdateVideoDTO;
 import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.IVideoService;
@@ -44,5 +45,10 @@ public class VideoController {
     public ResponseEntity<Void> deletaPorId(@PathVariable Long id){
         service.deletaPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VideoDTO> atualiza(@RequestBody UpdateVideoDTO dto, @PathVariable Long id){
+        return ResponseEntity.ok(service.atualizaPorId(dto, id).toDTO());
     }
 }

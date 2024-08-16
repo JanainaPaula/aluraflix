@@ -1,5 +1,6 @@
 package br.com.aluraflix.service;
 
+import br.com.aluraflix.controller.dto.UpdateVideoDTO;
 import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.repository.VideoRepository;
@@ -30,6 +31,7 @@ public class VideoService implements IVideoService{
     public Video buscarPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Vídeo não encontrado!"));
     }
+
     @Override
     public void deletaPorId(Long id){
         var video = repository.findById(id);
@@ -39,5 +41,12 @@ public class VideoService implements IVideoService{
         else {
             throw new RuntimeException("Vídeo não encontrado!");
         }
+    }
+
+    @Override
+    public Video atualizaPorId(UpdateVideoDTO dto, Long id) {
+        var video = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Video não encontrado!"));
+        return repository.save(video.update(dto));
     }
 }
