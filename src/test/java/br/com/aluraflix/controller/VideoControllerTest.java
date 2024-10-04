@@ -1,6 +1,7 @@
 package br.com.aluraflix.controller;
 
 import br.com.aluraflix.controller.dto.VideoDTO;
+import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.VideoService;
 import org.junit.jupiter.api.Test;
@@ -39,9 +40,9 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus201QuandoCadastrarVideoComSucesso() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,"Golang", "Aprenda golang de uma forma divertida", "https://www.google.com");
+        VideoDTO dto = new VideoDTO(1L,2L, "Golang", "Aprenda golang de uma forma divertida", "https://www.google.com");
 
-        given(service.cadastra(dto)).willReturn(new Video(dto.titulo(), dto.descricao(), dto.url()));
+        given(service.cadastra(dto)).willReturn(new Video(dto.titulo(), dto.descricao(), dto.url(), new Categoria()));
 
         MockHttpServletResponse response = mvc.perform(
                 post("/videos")
@@ -54,7 +55,7 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus400QuandoTentarCadastrarVideoComTituloEmBranco() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,"", "Aprenda golang de uma forma divertida", "https://www.google.com");
+        VideoDTO dto = new VideoDTO(1L,2L,"", "Aprenda golang de uma forma divertida", "https://www.google.com");
 
         MockHttpServletResponse response = mvc.perform(
                 post("/videos")
@@ -67,7 +68,7 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus400QuandoTentarCadastrarVideoComDescricaoEmBranco() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,"Golang", "", "https://www.google.com");
+        VideoDTO dto = new VideoDTO(1L,2L,"Golang", "", "https://www.google.com");
 
         MockHttpServletResponse response = mvc.perform(
                 post("/videos")
@@ -80,7 +81,7 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus400QuandoTentarCadastrarVideoComUmaUrlInvalida() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,"Golang", "Aprenda golang de uma forma divertida", "url-do-video");
+        VideoDTO dto = new VideoDTO(1L,2L,"Golang", "Aprenda golang de uma forma divertida", "url-do-video");
 
         MockHttpServletResponse response = mvc.perform(
                 post("/videos")
@@ -93,7 +94,7 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
-        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com")));
+        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria())));
 
         MockHttpServletResponse response = mvc.perform(
                 get("/videos")
@@ -105,7 +106,7 @@ class VideoControllerTest {
 
     @Test
     void deveriaDevolverStatus200QuandoEncontrado() throws Exception {
-        given(service.buscarPorId(Mockito.any())).willReturn(new Video("Curso Java", "Curso rápido java", "http://www.google.com"));
+        given(service.buscarPorId(Mockito.any())).willReturn(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria()));
 
         MockHttpServletResponse response = mvc.perform(
                 get("/videos/{id}", 1)

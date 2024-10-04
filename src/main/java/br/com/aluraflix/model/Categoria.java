@@ -1,10 +1,11 @@
 package br.com.aluraflix.model;
 
 import br.com.aluraflix.controller.dto.CategoriaDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
+import jakarta.persistence.*;
+import org.apache.logging.log4j.util.Strings;
+
+import java.util.List;
 
 @Entity(name = "categorias")
 public class Categoria {
@@ -13,6 +14,9 @@ public class Categoria {
     private Long id;
     private String titulo;
     private String cor;
+
+    @OneToMany(mappedBy = "categoria")
+    private List<Video> videos;
 
     public Categoria() {
     }
@@ -23,11 +27,25 @@ public class Categoria {
         this.cor = cor;
     }
 
+    public Categoria(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
 
     public CategoriaDTO toDTO(){
         return new CategoriaDTO(this.id, this.titulo, this.cor);
+    }
+
+    public Categoria update(UpdateCategoriaDTO dto){
+        if (!Strings.isBlank(dto.titulo())){
+            this.titulo = dto.titulo();
+        }
+        if (!Strings.isBlank(dto.cor())){
+            this.cor = dto.cor();
+        }
+        return this;
     }
 }

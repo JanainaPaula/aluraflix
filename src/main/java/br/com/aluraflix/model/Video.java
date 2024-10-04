@@ -2,11 +2,7 @@ package br.com.aluraflix.model;
 
 import br.com.aluraflix.controller.dto.UpdateVideoDTO;
 import br.com.aluraflix.controller.dto.VideoDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.apache.logging.log4j.util.Strings;
 
 @Entity
@@ -23,13 +19,18 @@ public class Video {
 
     private String url;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
     public Video() {
     }
 
-    public Video(String titulo, String descricao, String url) {
+    public Video(String titulo, String descricao, String url, Categoria categoria) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
+        this.categoria = categoria;
     }
 
     public Long getId() {
@@ -37,7 +38,7 @@ public class Video {
     }
 
     public VideoDTO toDTO(){
-        return new VideoDTO(this.id, this.titulo, this.descricao, this.url);
+        return new VideoDTO(this.id, this.categoria.getId(), this.titulo, this.descricao, this.url);
     }
 
     public Video update(UpdateVideoDTO dto){

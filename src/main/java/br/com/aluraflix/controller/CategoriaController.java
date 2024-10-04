@@ -1,6 +1,7 @@
 package br.com.aluraflix.controller;
 
 import br.com.aluraflix.controller.dto.CategoriaDTO;
+import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
 import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.service.ICategoriaService;
 import jakarta.validation.Valid;
@@ -46,4 +47,9 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaDTO> atualizaCategoria(@PathVariable Long id, @RequestBody UpdateCategoriaDTO dto){
+        Categoria categoriaAtualizada = categoriaService.atualizaCategoria(id, dto);
+        return ResponseEntity.ok(categoriaAtualizada.toDTO());
+    }
 }
