@@ -1,12 +1,16 @@
 package br.com.aluraflix.controller.dto;
 
+import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
 public record VideoDTO(
 
         Long id,
+
+        Long categoriaId,
 
         @NotBlank(message = "O titulo do video não pode estar vazio.")
         String titulo,
@@ -18,7 +22,7 @@ public record VideoDTO(
         @URL(message = "Url inválida")
         String url
 ) {
-    public Video toModel(){
-        return new Video(titulo(), descricao(), url());
+    public Video toModel(Categoria categoria){
+        return new Video(titulo(), descricao(), url(), categoria);
     }
 }
