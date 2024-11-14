@@ -1,11 +1,10 @@
 package br.com.aluraflix.controller;
 
-import br.com.aluraflix.controller.dto.VideoDTO;
+import br.com.aluraflix.controller.dto.CategoriaDTO;
 import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
-import br.com.aluraflix.service.VideoService;
+import br.com.aluraflix.service.CategoriaService;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -20,32 +19,31 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
-class VideoControllerTest {
+class CategoriaControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private VideoService service;
+    private CategoriaService categoriaService;
 
     @Autowired
-    private JacksonTester<VideoDTO> jsonDto;
+    private JacksonTester<CategoriaDTO> jsonDto;
 
     @Test
-    void deveriaDevolverStatus201QuandoCadastrarVideoComSucesso() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,2L, "Golang", "Aprenda golang de uma forma divertida", "https://www.google.com");
+    void deveriaDevolverStatus201QuandoCadastrarCategoriaComSucesso() throws Exception {
+        CategoriaDTO dto = new CategoriaDTO(2L,"Curso", "#4169e1");
 
-        given(service.cadastra(dto)).willReturn(new Video(dto.titulo(), dto.descricao(), dto.url(), new Categoria()));
+        given(categoriaService.cadastraCategoria(dto)).willReturn(new Categoria(dto.titulo(), dto.cor()));
 
         MockHttpServletResponse response = mvc.perform(
-                post("/videos")
+                post("/categoria")
                         .content(jsonDto.write(dto).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
@@ -54,11 +52,11 @@ class VideoControllerTest {
     }
 
     @Test
-    void deveriaDevolverStatus400QuandoTentarCadastrarVideoComTituloEmBranco() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,2L,"", "Aprenda golang de uma forma divertida", "https://www.google.com");
+    void deveriaDevolverStatus400QuandoTentarCadastrarCategoriaComTituloEmBranco() throws Exception {
+        CategoriaDTO dto = new CategoriaDTO(2L,"", "#4169e1");
 
         MockHttpServletResponse response = mvc.perform(
-                post("/videos")
+                post("/categoria")
                         .content(jsonDto.write(dto).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
@@ -67,11 +65,11 @@ class VideoControllerTest {
     }
 
     @Test
-    void deveriaDevolverStatus400QuandoTentarCadastrarVideoComDescricaoEmBranco() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,2L,"Golang", "", "https://www.google.com");
+    void deveriaDevolverStatus400QuandoTentarCadastrarCategoriaComCorEmBranco() throws Exception {
+        CategoriaDTO dto = new CategoriaDTO(2L,"Curso", "");
 
         MockHttpServletResponse response = mvc.perform(
-                post("/videos")
+                post("/categoria")
                         .content(jsonDto.write(dto).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
@@ -80,24 +78,11 @@ class VideoControllerTest {
     }
 
     @Test
-    void deveriaDevolverStatus400QuandoTentarCadastrarVideoComUmaUrlInvalida() throws Exception {
-        VideoDTO dto = new VideoDTO(1L,2L,"Golang", "Aprenda golang de uma forma divertida", "url-do-video");
+    void deveriaDevolverStatus200QuandoChamarOMetodoExibirCategoria() throws Exception {
+        given(categoriaService.exibirCategoria()).willReturn(List.of(new Categoria("Curso","#4169e1")));
 
         MockHttpServletResponse response = mvc.perform(
-                post("/videos")
-                        .content(jsonDto.write(dto).getJson())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        assertEquals(400, response.getStatus());
-    }
-
-    @Test
-    void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
-        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria())));
-
-        MockHttpServletResponse response = mvc.perform(
-                get("/videos")
+                get("/categoria")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
@@ -105,11 +90,11 @@ class VideoControllerTest {
     }
 
     @Test
-    void deveriaDevolverStatus200QuandoEncontrado() throws Exception {
-        given(service.buscarPorId(Mockito.any())).willReturn(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria()));
+    void deveriaDevolverStatus200QuandoEncontrarCategoria() throws Exception {
+        given(categoriaService.buscaCategoriaPorId(Mockito.any())).willReturn(new Categoria("Curso","#4169e1"));
 
         MockHttpServletResponse response = mvc.perform(
-                get("/videos/{id}", 1)
+                get("/categoria/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
@@ -117,11 +102,11 @@ class VideoControllerTest {
     }
 
     @Test
-    void deveriaDevolverStatus204QuandoDeletado() throws Exception{
-        Mockito.doNothing().when(service).deletaPorId(Mockito.any());
+    void deveriaDevolverStatus204QuandoDeletadarCategoria() throws Exception{
+        Mockito.doNothing().when(categoriaService).deletaCategoriaPorId(Mockito.any());
 
         MockHttpServletResponse response = mvc.perform(
-                delete("/videos/{id}", 1)
+                delete("/categoria/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
