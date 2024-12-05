@@ -22,10 +22,11 @@ public class VideoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VideoDTO>> exibir(){
-        List<Video> videos = service.exibir();
-        List<VideoDTO> dtos = videos.stream().map(video -> video.toDTO()).toList();
-        return ResponseEntity.ok(dtos);
+    public ResponseEntity<List<VideoDTO>> handleBusca(@RequestParam(required = false) String search){
+        if (search != null){
+            return buscaVideos(search);
+        }
+        return exibir();
     }
 
     @GetMapping("/{id}")
@@ -50,5 +51,15 @@ public class VideoController {
     @PutMapping("/{id}")
     public ResponseEntity<VideoDTO> atualiza(@RequestBody UpdateVideoDTO dto, @PathVariable Long id){
         return ResponseEntity.ok(service.atualizaPorId(dto, id).toDTO());
+    }
+
+    private ResponseEntity<List<VideoDTO>> exibir(){
+        List<Video> videos = service.exibir();
+        List<VideoDTO> dtos = videos.stream().map(Video::toDTO).toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+    private ResponseEntity<List<VideoDTO>> buscaVideos(String search){
+        return ResponseEntity.ok(service.buscaVideos(search).stream().map(Video::toDTO).toList());
     }
 }

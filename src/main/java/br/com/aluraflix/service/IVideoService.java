@@ -12,4 +12,5 @@ public interface IVideoService {
     Video buscarPorId(Long id);
     void deletaPorId(Long id);
     Video atualizaPorId(UpdateVideoDTO dto, Long id);
+    List<Video> buscaVideos(String search);
 }

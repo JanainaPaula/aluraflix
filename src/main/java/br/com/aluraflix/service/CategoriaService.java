@@ -3,8 +3,10 @@ package br.com.aluraflix.service;
 import br.com.aluraflix.controller.dto.CategoriaDTO;
 import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
 import br.com.aluraflix.model.Categoria;
+import br.com.aluraflix.model.Video;
 import br.com.aluraflix.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -46,6 +48,13 @@ public class CategoriaService implements ICategoriaService{
         var categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada!"));
         return categoriaRepository.save(categoria.update(dto));
+    }
+
+    @Override
+    public List<Video> getVideosPorId(Long id) {
+        var categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada!"));
+        return categoria.getVideos();
     }
 
 }

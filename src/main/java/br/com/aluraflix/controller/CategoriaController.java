@@ -2,7 +2,9 @@ package br.com.aluraflix.controller;
 
 import br.com.aluraflix.controller.dto.CategoriaDTO;
 import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
+import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Categoria;
+import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.ICategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +53,11 @@ public class CategoriaController {
     public ResponseEntity<CategoriaDTO> atualizaCategoria(@PathVariable Long id, @RequestBody UpdateCategoriaDTO dto){
         Categoria categoriaAtualizada = categoriaService.atualizaCategoria(id, dto);
         return ResponseEntity.ok(categoriaAtualizada.toDTO());
+    }
+
+    @GetMapping("/{id}/videos")
+    public ResponseEntity<List<VideoDTO>> getVideosPorCategoriaId(@PathVariable Long id) {
+        List<VideoDTO> videos = categoriaService.getVideosPorId(id).stream().map(Video::toDTO).toList();
+        return ResponseEntity.ok(videos);
     }
 }

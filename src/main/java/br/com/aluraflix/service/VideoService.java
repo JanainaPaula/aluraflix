@@ -58,4 +58,8 @@ public class VideoService implements IVideoService{
     private Categoria buscaCategoria(Long categoriaId) {
         return categoriaService.buscaCategoriaPorId(Objects.requireNonNullElse(categoriaId, 52L));
     }
+
+    public List<Video> buscaVideos(String search){
+        return repository.findByTituloContainingIgnoreCase(search).orElseThrow(() -> new RuntimeException("Nenhum vídeo foi encontrado!"));
+    }
 }
