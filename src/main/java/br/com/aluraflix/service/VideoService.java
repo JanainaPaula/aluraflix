@@ -5,6 +5,9 @@ import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.repository.VideoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +30,15 @@ public class VideoService implements IVideoService{
         return repository.save(dto.toModel(categoria));
     }
 
+//    @Override
+//    public List<Video> exibir() {
+//        return repository.findAll();
+//    }
     @Override
-    public List<Video> exibir() {
-        return repository.findAll();
+    public Page<Video> exibir(Integer page, Integer size) {
+        var pageble = PageRequest.of(page, size);
+        return repository.findAll(pageble);
     }
-
     @Override
     public Video buscarPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Vídeo não encontrado!"));

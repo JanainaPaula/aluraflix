@@ -5,6 +5,9 @@ import br.com.aluraflix.controller.dto.VideoDTO;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.IVideoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +22,6 @@ public class VideoController {
 
     public VideoController(IVideoService service) {
         this.service = service;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<VideoDTO>> handleBusca(@RequestParam(required = false) String search){
-        if (search != null){
-            return buscaVideos(search);
-        }
-        return exibir();
     }
 
     @GetMapping("/{id}")
@@ -53,13 +48,14 @@ public class VideoController {
         return ResponseEntity.ok(service.atualizaPorId(dto, id).toDTO());
     }
 
-    private ResponseEntity<List<VideoDTO>> exibir(){
-        List<Video> videos = service.exibir();
-        List<VideoDTO> dtos = videos.stream().map(Video::toDTO).toList();
-        return ResponseEntity.ok(dtos);
+    @GetMapping
+    private ResponseEntity<Page<VideoDTO>> exibir(@RequestParam Integer page,@RequestParam Integer size){
+        Page<Video> videos = service.exibir(page, size);
+        return ResponseEntity.ok(videos.map(Video::toDTO));
     }
 
-    private ResponseEntity<List<VideoDTO>> buscaVideos(String search){
+    @GetMapping("/search")
+    private ResponseEntity<List<VideoDTO>> buscaVideos(@RequestParam String search){
         return ResponseEntity.ok(service.buscaVideos(search).stream().map(Video::toDTO).toList());
     }
 }
