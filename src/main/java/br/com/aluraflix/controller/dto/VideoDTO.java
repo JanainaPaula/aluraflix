@@ -3,7 +3,6 @@ package br.com.aluraflix.controller.dto;
 import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
 public record VideoDTO(

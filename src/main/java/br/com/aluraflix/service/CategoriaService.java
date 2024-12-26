@@ -5,6 +5,8 @@ import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
 import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.repository.CategoriaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,9 @@ public class CategoriaService implements ICategoriaService{
     }
 
     @Override
-    public List<Categoria> exibirCategoria(){
-        return categoriaRepository.findAll();
+    public Page<Categoria> exibirCategoria(Integer page, Integer size){
+        var pageble = PageRequest.of(page,size);
+        return categoriaRepository.findAll(pageble);
     }
 
     @Override

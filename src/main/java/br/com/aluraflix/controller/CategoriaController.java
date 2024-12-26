@@ -7,6 +7,7 @@ import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.ICategoriaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +32,9 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoriaDTO>> exibirCategoria(){
-        List<Categoria> categorias = categoriaService.exibirCategoria();
-        List<CategoriaDTO> dtos = categorias.stream().map(categoria -> categoria.toDTO()).toList();
-        return ResponseEntity.ok(dtos);
+    public ResponseEntity<Page<CategoriaDTO>> exibirCategoria(@RequestParam Integer page, @RequestParam Integer size){
+        Page<Categoria> categorias = categoriaService.exibirCategoria(page,size);
+        return ResponseEntity.ok(categorias.map(Categoria::toDTO));
     }
 
     @GetMapping("/{id}")
