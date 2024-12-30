@@ -5,6 +5,8 @@ import br.com.aluraflix.controller.dto.VideoDTO;
 import jakarta.persistence.*;
 import org.apache.logging.log4j.util.Strings;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "videos")
 public class Video {

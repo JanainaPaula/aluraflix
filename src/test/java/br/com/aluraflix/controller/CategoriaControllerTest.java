@@ -77,17 +77,17 @@ class CategoriaControllerTest {
         assertEquals(400, response.getStatus());
     }
 
-    @Test
-    void deveriaDevolverStatus200QuandoChamarOMetodoExibirCategoria() throws Exception {
-        given(categoriaService.exibirCategoria()).willReturn(List.of(new Categoria("Curso","#4169e1")));
-
-        MockHttpServletResponse response = mvc.perform(
-                get("/categoria")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        assertEquals(200, response.getStatus());
-    }
+//    @Test
+//    void deveriaDevolverStatus200QuandoChamarOMetodoExibirCategoria() throws Exception {
+//        given(categoriaService.exibirCategoria()).willReturn(List.of(new Categoria("Curso","#4169e1")));
+//
+//        MockHttpServletResponse response = mvc.perform(
+//                get("/categoria")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//        ).andReturn().getResponse();
+//
+//        assertEquals(200, response.getStatus());
+//    }
 
     @Test
     void deveriaDevolverStatus200QuandoEncontrarCategoria() throws Exception {

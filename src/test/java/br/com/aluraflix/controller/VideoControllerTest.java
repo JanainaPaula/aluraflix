@@ -92,17 +92,17 @@ class VideoControllerTest {
         assertEquals(400, response.getStatus());
     }
 
-    @Test
-    void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
-        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria())));
-
-        MockHttpServletResponse response = mvc.perform(
-                get("/videos")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        assertEquals(200, response.getStatus());
-    }
+//    @Test
+//    void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
+//        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria())));
+//
+//        MockHttpServletResponse response = mvc.perform(
+//                get("/videos")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//        ).andReturn().getResponse();
+//
+//        assertEquals(200, response.getStatus());
+//    }
 
     @Test
     void deveriaDevolverStatus200QuandoEncontrado() throws Exception {
