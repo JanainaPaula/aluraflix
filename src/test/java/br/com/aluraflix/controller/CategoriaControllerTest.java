@@ -2,7 +2,6 @@ package br.com.aluraflix.controller;
 
 import br.com.aluraflix.controller.dto.CategoriaDTO;
 import br.com.aluraflix.model.Categoria;
-import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.CategoriaService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -77,17 +77,17 @@ class CategoriaControllerTest {
         assertEquals(400, response.getStatus());
     }
 
-//    @Test
-//    void deveriaDevolverStatus200QuandoChamarOMetodoExibirCategoria() throws Exception {
-//        given(categoriaService.exibirCategoria()).willReturn(List.of(new Categoria("Curso","#4169e1")));
-//
-//        MockHttpServletResponse response = mvc.perform(
-//                get("/categoria")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        ).andReturn().getResponse();
-//
-//        assertEquals(200, response.getStatus());
-//    }
+    @Test
+    void deveriaDevolverStatus200QuandoChamarOMetodoExibirCategoria() throws Exception {
+        given(categoriaService.exibirCategoria(0, 10)).willReturn(new PageImpl<>(List.of(new Categoria("Curso","#4169e1"))));
+
+        MockHttpServletResponse response = mvc.perform(
+                get("/categoria").param("page", "0").param("size", "10")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        assertEquals(200, response.getStatus());
+    }
 
     @Test
     void deveriaDevolverStatus200QuandoEncontrarCategoria() throws Exception {

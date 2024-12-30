@@ -5,7 +5,6 @@ import br.com.aluraflix.model.Categoria;
 import br.com.aluraflix.model.Video;
 import br.com.aluraflix.service.VideoService;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -13,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -92,17 +91,17 @@ class VideoControllerTest {
         assertEquals(400, response.getStatus());
     }
 
-//    @Test
-//    void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
-//        given(service.exibir()).willReturn(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria())));
-//
-//        MockHttpServletResponse response = mvc.perform(
-//                get("/videos")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        ).andReturn().getResponse();
-//
-//        assertEquals(200, response.getStatus());
-//    }
+    @Test
+    void deveriaDevolverStatus200QuandoChamarOMetodoExibir() throws Exception {
+        given(service.exibir(0, 10)).willReturn(new PageImpl<>(List.of(new Video("Curso Java", "Curso rápido java", "http://www.google.com", new Categoria()))));
+
+        MockHttpServletResponse response = mvc.perform(
+                get("/videos").param("page", "0").param("size", "10")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        assertEquals(200, response.getStatus());
+    }
 
     @Test
     void deveriaDevolverStatus200QuandoEncontrado() throws Exception {
