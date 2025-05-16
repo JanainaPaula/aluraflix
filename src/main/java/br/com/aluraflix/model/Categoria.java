@@ -2,7 +2,6 @@ package br.com.aluraflix.model;
 
 import br.com.aluraflix.controller.dto.CategoriaDTO;
 import br.com.aluraflix.controller.dto.UpdateCategoriaDTO;
-import br.com.aluraflix.controller.dto.VideoDTO;
 import jakarta.persistence.*;
 import org.apache.logging.log4j.util.Strings;
 
